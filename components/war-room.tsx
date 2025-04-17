@@ -1,70 +1,115 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { AlertTriangle, ThumbsUp, MessageSquare } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  AlertTriangle,
+  ThumbsUp,
+  MessageSquare,
+  FishIcon as Shark,
+  Users,
+  Newspaper,
+} from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
-export function WarRoom() {
+interface WarRoomProps {
+  analysisData: {
+    heading: string;
+    ticker: string;
+    conclusion: string;
+    agents: {
+      HedgeFundGPT: {
+        rating: "Hold" | "Buy" | "Sell" | "Neutral";
+        summary: string;
+        raw: string;
+      };
+      RetailGPT: {
+        rating: "Hold" | "Buy" | "Sell" | "Neutral";
+        summary: string;
+        raw: string;
+      };
+      NewsBot: {
+        rating: "Hold" | "Buy" | "Sell" | "Neutral";
+        summary: string;
+        raw: string;
+      };
+      Consensus: {
+        rating: "Hold" | "Buy" | "Sell" | "Neutral";
+        summary: string;
+        raw: string;
+      };
+    };
+    final_recommendation: "Hold" | "Buy" | "Sell" | "Neutral";
+    consensus: string;
+  };
+  query: string;
+  setQuery: (query: string) => void;
+}
+
+export function WarRoom({ analysisData, query, setQuery }: WarRoomProps) {
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader className="pb-3">
           <div className="flex justify-between items-start">
             <div>
-              <CardTitle>Tesla (TSLA) Analysis</CardTitle>
-              <CardDescription>Q4 2024 10-K + Recent News</CardDescription>
+              <CardTitle>Analyzing {analysisData.ticker}</CardTitle>
+              <CardDescription>
+                {analysisData.ticker} analysis with Recent News
+              </CardDescription>
             </div>
-            <Badge variant="outline" className="bg-amber-500/10 text-amber-500 border-amber-500/20">
-              Hold with Caution
+            <Badge variant={analysisData.final_recommendation}>
+              {analysisData.final_recommendation}
             </Badge>
           </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="flex items-start gap-3">
-              <Avatar className="border-2 border-red-500/20 h-10 w-10">
-                <AvatarFallback className="bg-red-500/20 text-red-500">HF</AvatarFallback>
-                <AvatarImage src="/placeholder.svg?height=40&width=40" />
-              </Avatar>
+              <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+                <Shark className="h-5 w-5 text-red-500" />
+              </div>
               <div className="flex-1 space-y-1.5">
                 <div className="flex items-center gap-2">
                   <h4 className="font-semibold text-sm">Hedge Fund Analyst</h4>
-                  <Badge variant="destructive" className="text-xs">
-                    Sell
+                  <Badge variant={analysisData.agents.HedgeFundGPT.rating}>
+                    {analysisData.agents.HedgeFundGPT.rating}
                   </Badge>
                 </div>
                 <div className="rounded-lg bg-muted p-3 text-sm">
-                  <p>
-                    Margins dropped 2%, questionable accounting on energy segment. Red flag on inventory buildup. Cash
-                    burn accelerating while competition intensifies in China and Europe.
+                  <p className="text-sm text-muted-foreground">
+                    {analysisData.agents.HedgeFundGPT.summary}
                   </p>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span>2 min ago</span>
-                  <Button variant="ghost" size="icon" className="h-6 w-6">
-                    <MessageSquare className="h-3 w-3" />
-                  </Button>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-start gap-3">
+            {/* <div className="flex items-start gap-3">
               <Avatar className="border-2 border-amber-500/20 h-10 w-10">
-                <AvatarFallback className="bg-amber-500/20 text-amber-500">SA</AvatarFallback>
+                <AvatarFallback className="bg-amber-500/20 text-amber-500">
+                  SA
+                </AvatarFallback>
                 <AvatarImage src="/placeholder.svg?height=40&width=40" />
               </Avatar>
               <div className="flex-1 space-y-1.5">
                 <div className="flex items-center gap-2">
                   <h4 className="font-semibold text-sm">Sell-Side Analyst</h4>
                   <Badge variant="outline" className="text-xs">
-                    Hold
+                    {analysisData.agents.}
                   </Badge>
                 </div>
                 <div className="rounded-lg bg-muted p-3 text-sm">
                   <p>
-                    Mixed signals. Revenue growth solid at 15% YoY, but margin compression concerning. Robotaxi
-                    potential remains speculative but promising. Valuation stretched relative to auto peers.
+                    Mixed signals. Revenue growth solid at 15% YoY, but margin
+                    compression concerning. Robotaxi potential remains
+                    speculative but promising. Valuation stretched relative to
+                    auto peers.
                   </p>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -74,71 +119,58 @@ export function WarRoom() {
                   </Button>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="flex items-start gap-3">
-              <Avatar className="border-2 border-green-500/20 h-10 w-10">
-                <AvatarFallback className="bg-green-500/20 text-green-500">RI</AvatarFallback>
-                <AvatarImage src="/placeholder.svg?height=40&width=40" />
-              </Avatar>
+              <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                <Users className="h-5 w-5 text-green-500" />
+              </div>
               <div className="flex-1 space-y-1.5">
                 <div className="flex items-center gap-2">
                   <h4 className="font-semibold text-sm">Retail Investor</h4>
-                  <Badge variant="default" className="bg-green-600 text-xs">
-                    Buy
+                  <Badge variant={analysisData.agents.RetailGPT.rating}>
+                    {analysisData.agents.RetailGPT.rating}
                   </Badge>
                 </div>
                 <div className="rounded-lg bg-muted p-3 text-sm">
-                  <p>
-                    HODL. Elon said 'we're just getting started.' Robotaxi reveal coming in August could be huge. Reddit
-                    sentiment still bullish despite recent dip.
+                  <p className="text-sm text-muted-foreground">
+                    {analysisData.agents.RetailGPT.summary}
                   </p>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span>Just now</span>
-                  <Button variant="ghost" size="icon" className="h-6 w-6">
-                    <MessageSquare className="h-3 w-3" />
-                  </Button>
                 </div>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <Avatar className="border-2 border-blue-500/20 h-10 w-10">
-                <AvatarFallback className="bg-blue-500/20 text-blue-500">NB</AvatarFallback>
-                <AvatarImage src="/placeholder.svg?height=40&width=40" />
-              </Avatar>
+              <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+                <Newspaper className="h-5 w-5 text-blue-500" />
+              </div>
               <div className="flex-1 space-y-1.5">
                 <div className="flex items-center gap-2">
                   <h4 className="font-semibold text-sm">News Digest Bot</h4>
-                  <Badge variant="outline" className="text-xs">
-                    Neutral
+                  <Badge variant={analysisData.agents.NewsBot.rating}>
+                    {analysisData.agents.NewsBot.rating}
                   </Badge>
                 </div>
                 <div className="rounded-lg bg-muted p-3 text-sm">
-                  <p>
-                    Reuters reported layoffs in charging division, CNBC bullish on robotaxi potential. WSJ highlighted
-                    growing inventory concerns. Twitter sentiment down 15% this week.
+                  <p className="text-sm text-muted-foreground">
+                    {analysisData.agents.NewsBot.summary}
                   </p>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span>Just now</span>
-                  <Button variant="ghost" size="icon" className="h-6 w-6">
-                    <MessageSquare className="h-3 w-3" />
-                  </Button>
                 </div>
               </div>
             </div>
 
             <div className="mt-6 p-4 rounded-md border bg-muted/50">
               <div className="flex items-center gap-2 mb-2">
-                <AlertTriangle className="h-5 w-5 text-amber-500" />
                 <h4 className="font-semibold">Final Recommendation</h4>
               </div>
-              <p className="text-sm mb-2">Team vote → 1 Sell, 1 Hold, 1 Buy, 1 Neutral</p>
+              <p className="text-sm mb-2 text-gray-300">
+                {analysisData.agents.Consensus.summary}
+              </p>
               <div className="flex items-center gap-2">
-                <ThumbsUp className="h-5 w-5 text-amber-500" />
-                <p className="font-medium">Hold with caution</p>
+                <ThumbsUp className="h-5 w-5 text-white" />
+                <p className="font-medium">
+                  {analysisData.final_recommendation}
+                </p>
               </div>
             </div>
           </div>
@@ -146,9 +178,13 @@ export function WarRoom() {
       </Card>
 
       <div className="flex gap-2">
-        <Textarea placeholder="Ask a follow-up question..." className="flex-1" />
+        <Textarea
+          placeholder="Ask a follow-up question..."
+          className="flex-1"
+          onChange={(e) => setQuery(e.target.value)}
+        />
         <Button>Send</Button>
       </div>
     </div>
-  )
+  );
 }

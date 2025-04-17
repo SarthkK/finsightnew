@@ -1,18 +1,20 @@
-import { Button } from "@/components/ui/button"
-import { TrendingUp, ArrowRight } from "lucide-react"
-import Link from "next/link"
+import { Button } from "@/components/ui/button";
+import { TrendingUp, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export function HeroSection() {
   return (
     <section className="relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-background to-background/0 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/0 to-background/25 pointer-events-none" />
       <div className="container flex flex-col items-center text-center pt-20 pb-16">
         <div className="inline-flex items-center rounded-full border px-4 py-1.5 text-sm font-medium mb-6">
           <span className="text-primary">Financial Intelligence</span>
           <div className="mx-2 h-4 w-px bg-muted" />
-          <span className="text-muted-foreground">Powered by Multi-Agent LLMs</span>
+          <span className="">Powered by Multi-Agent LLMs</span>
         </div>
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">FinSight: Financial LLM War Room</h1>
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+          FinSight: Financial LLM War Room
+        </h1>
         <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mb-10">
           The AI that helps you outthink hedge funds
         </p>
@@ -32,5 +34,5 @@ export function HeroSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -1,5 +1,5 @@
-import Link from "next/link"
-import { BarChart2 } from "lucide-react"
+import Link from "next/link";
+import { BarChart2 } from "lucide-react";
 
 export function Footer() {
   return (
@@ -11,27 +11,43 @@ export function Footer() {
             <span className="text-lg font-bold">FinSight</span>
           </div>
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} FinSight Financial LLM War Room. All rights reserved.
+            &copy; {new Date().getFullYear()} FinSight Financial LLM War Room.
+            All rights reserved.
           </p>
         </div>
         <nav className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
-          <Link href="#" className="hover:text-foreground transition-colors">
+          <Link
+            href="author"
+            className="hover:text-foreground transition-colors"
+          >
             About
           </Link>
-          <Link href="#" className="hover:text-foreground transition-colors">
+          <Link
+            href="/features"
+            className="hover:text-foreground transition-colors"
+          >
             Features
           </Link>
-          <Link href="#" className="hover:text-foreground transition-colors">
+          <Link
+            href="/pricing"
+            className="hover:text-foreground transition-colors"
+          >
             Pricing
           </Link>
-          <Link href="#" className="hover:text-foreground transition-colors">
+          <Link
+            href="/blogs"
+            className="hover:text-foreground transition-colors"
+          >
             Blog
           </Link>
-          <Link href="#" className="hover:text-foreground transition-colors">
+          <Link
+            href="/contact"
+            className="hover:text-foreground transition-colors"
+          >
             Contact
           </Link>
         </nav>
       </div>
     </footer>
-  )
+  );
 }
