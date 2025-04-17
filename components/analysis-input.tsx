@@ -31,7 +31,12 @@ export function AnalysisInput({
   agents,
   setAgents,
 }: AnalysisInputProps) {
-  const agentlist = ["Hedge Fund Analyst", "News Analyst", "Retail Analyst"];
+  const agentlist = [
+    "Hedge Fund Analyst",
+    "News Analyst",
+    "Retail Analyst",
+    "Sellside Analyst",
+  ];
   return (
     <Card>
       <CardHeader>

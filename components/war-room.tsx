@@ -16,11 +16,13 @@ import {
   Users,
   Newspaper,
   LoaderCircle,
+  TrendingUp,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 interface WarRoomProps {
   analysisData: {
@@ -44,6 +46,11 @@ interface WarRoomProps {
         raw: string;
       };
       Consensus: {
+        rating: "Hold" | "Buy" | "Sell" | "Neutral";
+        summary: string;
+        raw: string;
+      };
+      SellSideAnalyst: {
         rating: "Hold" | "Buy" | "Sell" | "Neutral";
         summary: string;
         raw: string;
@@ -90,42 +97,37 @@ export function WarRoom({ analysisData, query, setQuery }: WarRoomProps) {
                 </div>
                 <div className="rounded-lg bg-muted p-3 text-sm">
                   <p className="text-sm text-muted-foreground">
-                    {analysisData.agents.HedgeFundGPT.summary}
+                    <ReactMarkdown>
+                      {analysisData.agents.HedgeFundGPT.summary}
+                    </ReactMarkdown>
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* <div className="flex items-start gap-3">
-              <Avatar className="border-2 border-amber-500/20 h-10 w-10">
-                <AvatarFallback className="bg-amber-500/20 text-amber-500">
-                  SA
-                </AvatarFallback>
-                <AvatarImage src="/placeholder.svg?height=40&width=40" />
-              </Avatar>
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center">
+                <TrendingUp className="h-5 w-5 text-amber-500" />
+              </div>
               <div className="flex-1 space-y-1.5">
                 <div className="flex items-center gap-2">
                   <h4 className="font-semibold text-sm">Sell-Side Analyst</h4>
-                  <Badge variant="outline" className="text-xs">
-                    {analysisData.agents.}
+                  <Badge
+                    variant={analysisData.agents.RetailGPT.rating}
+                    className="text-xs"
+                  >
+                    {analysisData.agents.SellSideAnalyst.rating}
                   </Badge>
                 </div>
                 <div className="rounded-lg bg-muted p-3 text-sm">
-                  <p>
-                    Mixed signals. Revenue growth solid at 15% YoY, but margin
-                    compression concerning. Robotaxi potential remains
-                    speculative but promising. Valuation stretched relative to
-                    auto peers.
+                  <p className="text-sm text-muted-foreground">
+                    <ReactMarkdown>
+                      {analysisData.agents.SellSideAnalyst.summary}
+                    </ReactMarkdown>
                   </p>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span>1 min ago</span>
-                  <Button variant="ghost" size="icon" className="h-6 w-6">
-                    <MessageSquare className="h-3 w-3" />
-                  </Button>
-                </div>
               </div>
-            </div> */}
+            </div>
 
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
@@ -140,7 +142,9 @@ export function WarRoom({ analysisData, query, setQuery }: WarRoomProps) {
                 </div>
                 <div className="rounded-lg bg-muted p-3 text-sm">
                   <p className="text-sm text-muted-foreground">
-                    {analysisData.agents.RetailGPT.summary}
+                    <ReactMarkdown>
+                      {analysisData.agents.RetailGPT.summary}
+                    </ReactMarkdown>
                   </p>
                 </div>
               </div>
@@ -159,7 +163,9 @@ export function WarRoom({ analysisData, query, setQuery }: WarRoomProps) {
                 </div>
                 <div className="rounded-lg bg-muted p-3 text-sm">
                   <p className="text-sm text-muted-foreground">
-                    {analysisData.agents.NewsBot.summary}
+                    <ReactMarkdown>
+                      {analysisData.agents.NewsBot.summary}
+                    </ReactMarkdown>
                   </p>
                 </div>
               </div>
@@ -171,7 +177,9 @@ export function WarRoom({ analysisData, query, setQuery }: WarRoomProps) {
               </div>
               <p className="text-sm mb-2 text-gray-300">
                 {!followup && !loading ? (
-                  analysisData.agents.Consensus.summary
+                  <ReactMarkdown>
+                    {analysisData.agents.Consensus.summary}
+                  </ReactMarkdown>
                 ) : !loading ? (
                   followup
                 ) : (
@@ -199,6 +207,8 @@ export function WarRoom({ analysisData, query, setQuery }: WarRoomProps) {
         <Button
           onClick={async () => {
             setLoading(true);
+            const que = query;
+            setQuery("");
             const res = await fetch(
               "https://finsight-backend-eb9y.onrender.com/follow-up",
               {
@@ -208,13 +218,13 @@ export function WarRoom({ analysisData, query, setQuery }: WarRoomProps) {
                 },
                 body: JSON.stringify({
                   consensus: analysisData.agents.Consensus.raw,
-                  user_question: query,
+                  user_question: que,
                 }),
               }
             );
             const data = await res.json();
             setFollowup(data.response);
-            setQuery("");
+
             setLoading(false);
           }}
         >

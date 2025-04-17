@@ -27,7 +27,7 @@ export function WarRoomLoading() {
             <p className="md:text-4xl text-2xl font-semibold leading-none tracking-tight z-30">
               Loading
             </p>
-            <LoaderCircle className="animate-spin h-72 w-72 text-gray-600 absolute z-10" />
+            <LoaderCircle className="animate-spin h-72 w-72 text-gray-600/20 absolute z-10" />
           </div>
         </CardContent>
       </Card>
