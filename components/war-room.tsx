@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -13,10 +15,12 @@ import {
   FishIcon as Shark,
   Users,
   Newspaper,
+  LoaderCircle,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
 
 interface WarRoomProps {
   analysisData: {
@@ -53,6 +57,8 @@ interface WarRoomProps {
 }
 
 export function WarRoom({ analysisData, query, setQuery }: WarRoomProps) {
+  const [followup, setFollowup] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   return (
     <div className="space-y-6">
       <Card>
@@ -164,7 +170,13 @@ export function WarRoom({ analysisData, query, setQuery }: WarRoomProps) {
                 <h4 className="font-semibold">Final Recommendation</h4>
               </div>
               <p className="text-sm mb-2 text-gray-300">
-                {analysisData.agents.Consensus.summary}
+                {!followup && !loading ? (
+                  analysisData.agents.Consensus.summary
+                ) : !loading ? (
+                  followup
+                ) : (
+                  <LoaderCircle className="animate-spin" />
+                )}
               </p>
               <div className="flex items-center gap-2">
                 <ThumbsUp className="h-5 w-5 text-white" />
@@ -182,8 +194,32 @@ export function WarRoom({ analysisData, query, setQuery }: WarRoomProps) {
           placeholder="Ask a follow-up question..."
           className="flex-1"
           onChange={(e) => setQuery(e.target.value)}
+          value={query}
         />
-        <Button>Send</Button>
+        <Button
+          onClick={async () => {
+            setLoading(true);
+            const res = await fetch(
+              "https://finsight-backend-eb9y.onrender.com/follow-up",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  consensus: analysisData.agents.Consensus.raw,
+                  user_question: query,
+                }),
+              }
+            );
+            const data = await res.json();
+            setFollowup(data.response);
+            setQuery("");
+            setLoading(false);
+          }}
+        >
+          Send
+        </Button>
       </div>
     </div>
   );
